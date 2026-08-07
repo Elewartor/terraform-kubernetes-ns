@@ -1,0 +1,43 @@
+name: Auto Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Tag and Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LATEST=$(git tag --sort=-v:refname | head -n 1)
+
+          if [ -z "$LATEST" ]; then
+            NEXT="0.0.1"
+          else
+            PATCH=$(echo "$LATEST" | cut -d. -f3)
+            NEXT="0.0.$((PATCH + 1))"
+          fi
+
+          echo "Creating tag: $NEXT"
+
+          git tag "$NEXT"
+          git push origin "$NEXT"
+
+          echo "Creating release: $NEXT"
+
+          gh release create "$NEXT" \
+            --title "Release $NEXT" \
+            --generate-notes
