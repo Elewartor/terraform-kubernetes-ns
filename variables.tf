@@ -21,3 +21,10 @@ variable "annotations" {
     mylabel = "label-value"
   }
 }
+
+
+variable "max_pods" {
+  description = "Annotations to be used in namespace"
+  type = string
+  default = "100"
+}
