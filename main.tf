@@ -18,5 +18,6 @@ resource "kubernetes_resource_quota_v1" "pod_quota" {
     hard = {
       pods = var.max_pods
     }
+    scopes = ["BestEffort"]
   }
 }
