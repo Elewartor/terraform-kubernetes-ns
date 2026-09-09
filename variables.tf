@@ -41,7 +41,7 @@ variable PodLimit {
 
 
 variable PersistentVolumeClaimLimit {
-  description = "Please specify PersistentVolumeClaim resource limit"
+  description = "Please specify Persistent Volume Claim resource limit"
   type = map(any)
   default = {
     storage = "2G"
